@@ -24,6 +24,9 @@ lazy val `diamond-slides` =
       // layer 1
       // team red
       `core-headers`,
+      // team yellow
+      `lib5-util`,
+      `lib7-util`,
       // layer 2
       // team blue
       `delivery-http-lib5`,
@@ -62,12 +65,11 @@ lazy val `core-headers` =
 
 // layer 2
 
-// team blue (i=input) from here
+// team yellow (c=common)
 
-lazy val `delivery-http-lib5` =
+lazy val `lib5-util` =
   project
-    .in(file("02-i-delivery-http-lib5"))
-    .dependsOn(`core-headers` % Cctt)
+    .in(file("02-c-lib5-util"))
     .settings(commonSettings)
     .settings(
       libraryDependencies ++= Seq(
@@ -75,16 +77,31 @@ lazy val `delivery-http-lib5` =
       )
     )
 
-lazy val `kafka-consumer-lib7` =
+lazy val `lib7-util` =
   project
-    .in(file("02-i-kafka-consumer-lib7"))
-    .dependsOn(`core-headers` % Cctt)
+    .in(file("02-c-lib7-util"))
     .settings(commonSettings)
     .settings(
       libraryDependencies ++= Seq(
         // lib7
       )
     )
+
+// team blue (i=input) from here
+
+lazy val `delivery-http-lib5` =
+  project
+    .in(file("02-i-delivery-http-lib5"))
+    .dependsOn(`core-headers` % Cctt)
+    .dependsOn(`lib5-util` % Cctt) // the dependency on lib5 is added transitively
+    .settings(commonSettings)
+
+lazy val `kafka-consumer-lib7` =
+  project
+    .in(file("02-i-kafka-consumer-lib7"))
+    .dependsOn(`core-headers` % Cctt)
+    .dependsOn(`lib7-util` % Cctt) // the dependency on lib7 is added transitively
+    .settings(commonSettings)
 
 lazy val `scheduler-lib8` =
   project
@@ -169,23 +186,15 @@ lazy val `external-google-maps-http-lib5` =
   project
     .in(file("02-o-external-google-maps-http-lib5"))
     .dependsOn(`core-headers` % Cctt)
+    .dependsOn(`lib5-util` % Cctt) // the dependency on lib5 is added transitively
     .settings(commonSettings)
-    .settings(
-      libraryDependencies ++= Seq(
-        // lib5
-      )
-    )
 
 lazy val `external-stripe-http-lib5` =
   project
     .in(file("02-o-external-stripe-http-lib5"))
     .dependsOn(`core-headers` % Cctt)
+    .dependsOn(`lib5-util` % Cctt) // the dependency on lib5 is added transitively
     .settings(commonSettings)
-    .settings(
-      libraryDependencies ++= Seq(
-        // lib5
-      )
-    )
 
 lazy val `internal-accounting-grpc-lib6` =
   project
@@ -202,12 +211,8 @@ lazy val `internal-kafka-producer-lib7` =
   project
     .in(file("02-o-internal-kafka-producer-lib7"))
     .dependsOn(`core-headers` % Cctt)
+    .dependsOn(`lib7-util` % Cctt) // the dependency on lib7 is added transitively
     .settings(commonSettings)
-    .settings(
-      libraryDependencies ++= Seq(
-        // lib7
-      )
-    )
 
 // layer 3
 
@@ -217,6 +222,7 @@ lazy val main =
   project
     .in(file("03-main"))
     // the dependency on `core-headers` is added transitively
+    // the dependencies on team yellow are added transitively
     // team blue
     .dependsOn(`delivery-http-lib5` % Cctt)
     .dependsOn(`kafka-consumer-lib7` % Cctt)
