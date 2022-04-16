@@ -70,6 +70,7 @@ lazy val `core-headers` =
 lazy val `lib5-util` =
   project
     .in(file("02-c-lib5-util"))
+    .dependsOn(`core-headers` % Cctt)
     .settings(commonSettings)
     .settings(
       libraryDependencies ++= Seq(
@@ -92,8 +93,7 @@ lazy val `lib7-util` =
 lazy val `delivery-http-lib5` =
   project
     .in(file("02-i-delivery-http-lib5"))
-    .dependsOn(`core-headers` % Cctt)
-    .dependsOn(`lib5-util` % Cctt) // the dependency on lib5 is added transitively
+    .dependsOn(`lib5-util` % Cctt) // the dependencies on `core-headers` and lib5 are added transitively
     .settings(commonSettings)
 
 lazy val `kafka-consumer-lib7` =
@@ -185,15 +185,13 @@ lazy val `config-db-mongo-lib4` =
 lazy val `external-google-maps-http-lib5` =
   project
     .in(file("02-o-external-google-maps-http-lib5"))
-    .dependsOn(`core-headers` % Cctt)
-    .dependsOn(`lib5-util` % Cctt) // the dependency on lib5 is added transitively
+    .dependsOn(`lib5-util` % Cctt) // the dependencies on `core-headers` and lib5 are added transitively
     .settings(commonSettings)
 
 lazy val `external-stripe-http-lib5` =
   project
     .in(file("02-o-external-stripe-http-lib5"))
-    .dependsOn(`core-headers` % Cctt)
-    .dependsOn(`lib5-util` % Cctt) // the dependency on lib5 is added transitively
+    .dependsOn(`lib5-util` % Cctt) // the dependencies on `core-headers` and lib5 are added transitively
     .settings(commonSettings)
 
 lazy val `internal-accounting-grpc-lib6` =
