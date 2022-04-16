@@ -81,6 +81,7 @@ lazy val `lib5-util` =
 lazy val `lib7-util` =
   project
     .in(file("02-c-lib7-util"))
+    .dependsOn(`core-headers` % Cctt)
     .settings(commonSettings)
     .settings(
       libraryDependencies ++= Seq(
@@ -99,8 +100,7 @@ lazy val `delivery-http-lib5` =
 lazy val `kafka-consumer-lib7` =
   project
     .in(file("02-i-kafka-consumer-lib7"))
-    .dependsOn(`core-headers` % Cctt)
-    .dependsOn(`lib7-util` % Cctt) // the dependency on lib7 is added transitively
+    .dependsOn(`lib7-util` % Cctt) // the dependencies on `core-headers` and lib7 are added transitively
     .settings(commonSettings)
 
 lazy val `scheduler-lib8` =
@@ -208,8 +208,7 @@ lazy val `internal-accounting-grpc-lib6` =
 lazy val `internal-kafka-producer-lib7` =
   project
     .in(file("02-o-internal-kafka-producer-lib7"))
-    .dependsOn(`core-headers` % Cctt)
-    .dependsOn(`lib7-util` % Cctt) // the dependency on lib7 is added transitively
+    .dependsOn(`lib7-util` % Cctt) // the dependencies on `core-headers` and lib7 are added transitively
     .settings(commonSettings)
 
 // layer 3
